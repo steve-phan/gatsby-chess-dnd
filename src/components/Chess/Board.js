@@ -2,6 +2,7 @@ import React from 'react'
 
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import { TouchBackend } from 'react-dnd-touch-backend'
 
 import Square from './Square'
 import BoardSquare from './BoardSquare'
@@ -9,6 +10,8 @@ import Knight from './Knight'
 // import { ItemTypes} from './ItemTypes'
 
 const Board = ({ knightPosition, handleSquareClick }) => {
+  const backend = window.innerWidth < 600 ? TouchBackend : HTML5Backend
+
   const renderPiece = (x, y, [knightX, knightY]) => {
     if (x === knightX && y === knightY) {
       return <Knight />
@@ -50,7 +53,7 @@ const Board = ({ knightPosition, handleSquareClick }) => {
   }
 
   return (
-    <DndProvider backend={HTML5Backend}>
+    <DndProvider backend={backend}>
       <div
         style={{
           width: '100%',

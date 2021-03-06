@@ -21,8 +21,8 @@ const Knight = ({ size }) => {
     <div
       ref={drag}
       style={{
-        opacity: isDragging ? 0.5 : 1,
-        fontSize: 25,
+        opacity: isDragging ? 0.2 : 1,
+        fontSize: 45,
         fontWeight: 'bold',
         cursor: 'move',
         width: 'fit-content',
