@@ -31,18 +31,21 @@ const Column = props => {
         droppableId={props.column.id}
         isDropDisabled={props.isDropDisabled}
       >
-        {(provided, snapshot) => (
-          <TaskList
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-            isDraggingOver={snapshot.isDraggingOver}
-          >
-            {props.tasks.map((task, index) => (
-              <Task key={task.id} task={task} index={index} />
-            ))}
-            {provided.placeholder}
-          </TaskList>
-        )}
+        {(provided, snapshot) => {
+          console.log(provided)
+          return (
+            <TaskList
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              isDraggingOver={snapshot.isDraggingOver}
+            >
+              {props.tasks.map((task, index) => (
+                <Task key={task.id} task={task} index={index} />
+              ))}
+              {provided.placeholder}
+            </TaskList>
+          )
+        }}
       </Droppable>
     </Container>
   )

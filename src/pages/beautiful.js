@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import ReactDOM from 'react-dom'
 import '@atlaskit/css-reset'
 import styled from 'styled-components'
 import { DragDropContext } from 'react-beautiful-dnd'
@@ -20,6 +19,7 @@ const Nice = () => {
 
   const [state, setState] = useState(initialData)
   const onDragStart = start => {
+    // console.log(start)
     const homeIndex = state.columnOrder.indexOf(start.source.droppableId)
     console.log(homeIndex)
     setState({
@@ -35,7 +35,7 @@ const Nice = () => {
     })
 
     const { destination, source, draggableId } = result
-
+    console.log(result)
     if (!destination) {
       return
     }
@@ -44,6 +44,7 @@ const Nice = () => {
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     ) {
+      console.log('cant not comback')
       return
     }
 
