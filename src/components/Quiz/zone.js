@@ -34,6 +34,7 @@ const Zone = props => {
           return (
             <Questions ref={provided.innerRef} {...provided.droppableProps}>
               {questions.map((question, index) => {
+                console.log(question)
                 return (
                   <Question
                     key={question.id}

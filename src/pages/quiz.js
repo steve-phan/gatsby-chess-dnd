@@ -5,21 +5,25 @@ import { DragDropContext } from 'react-beautiful-dnd'
 import Zone from '../components/Quiz/zone'
 const quizData = {
   questions: {
+    question0: {
+      id: 'question0',
+      question: 'A cat',
+      category: 'right-answer-zone',
+    },
     question1: {
       id: 'question1',
-      question: 'A cat',
+      question: 'A Dog',
+      category: 'wrong-answer-zone',
     },
     question2: {
       id: 'question2',
-      question: 'A Dog',
+      question: 'A Kuh',
+      category: 'right-answer-zone',
     },
     question3: {
       id: 'question3',
-      question: 'A Kuh',
-    },
-    question4: {
-      id: 'question4',
       question: 'A Rabbit',
+      category: 'wrong-answer-zone',
     },
   },
 
@@ -28,7 +32,7 @@ const quizData = {
       id: 'questions-zone',
       title: 'Question',
       // question: 'Chose the correct box!',
-      questionIds: ['question1', 'question2', 'question3', 'question4'],
+      questionIds: ['question0', 'question1', 'question2', 'question3'],
     },
     'right-answer-zone': {
       id: 'right-answer-zone',
@@ -64,7 +68,7 @@ const QuizPage = () => {
     })
   }
   const onDragEnd = result => {
-    // console.log(result)
+    console.log(result)
     setData({
       ...data,
       homeIndex: null,
@@ -81,17 +85,43 @@ const QuizPage = () => {
       // BACK TO SAVE ZONE(LOCATION)//
       return
     }
+
     const home = data.zones[source.droppableId]
     const target = data.zones[destination.droppableId]
+    const newQuestionIds = [...data.zones[source.droppableId].questionIds]
+    if (data.questions[draggableId].category === destination.droppableId) {
+      newQuestionIds.splice(source.index, 1)
+      console.log(newQuestionIds)
+      const newQuestionsZone = {
+        ...data.zones['questions-zone'],
+        questionIds: newQuestionIds,
+      }
+      const newTargetQuestionZone = {
+        ...data.zones[destination.droppableId],
+        questionIds: [
+          ...data.zones[destination.droppableId].questionIds,
+          draggableId,
+        ],
+      }
+      const newData = {
+        ...data,
+        zones: {
+          ...data.zones,
+          [newQuestionsZone.id]: newQuestionsZone,
+          [newTargetQuestionZone.id]: newTargetQuestionZone,
+        },
+      }
+      setData(newData)
+      return
+    }
 
+    // if (home.id)
+    // console.log(home)
+    // console.log(target)
     if (source.droppableId === destination.droppableId) {
-      const newQuestionIds = [
-        ...data.zones[destination.droppableId].questionIds,
-      ]
-
       newQuestionIds.splice(source.index, 1)
       newQuestionIds.splice(destination.index, 0, draggableId)
-      console.log(newQuestionIds)
+      // console.log(newQuestionIds)
       const newZones = {
         ...data.zones[source.droppableId],
         questionIds: newQuestionIds,
