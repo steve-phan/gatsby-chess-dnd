@@ -25,7 +25,7 @@ const Questions = styled.div`
 
 const Zone = props => {
   const { questions, zone } = props
-  console.log(props)
+  //   console.log(props)
   return (
     <Container>
       <Title> {zone.title}: </Title>

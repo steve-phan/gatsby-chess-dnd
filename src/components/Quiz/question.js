@@ -10,11 +10,11 @@ const Container = styled.div`
 `
 
 const Question = props => {
-  console.log(props)
+  //   console.log(props)
   return (
     <Draggable draggableId={props.question.id} index={props.index}>
       {(provided, snapshot) => {
-        console.log(provided)
+        // console.log(provided)
         return (
           <Container
             ref={provided.innerRef}

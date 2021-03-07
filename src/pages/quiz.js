@@ -32,12 +32,12 @@ const quizData = {
     },
     'right-answer-zone': {
       id: 'right-answer-zone',
-      title: 'left box',
+      title: 'right box',
       questionIds: [],
     },
     'wrong-answer-zone': {
       id: 'wrong-answer-zone',
-      title: 'left box',
+      title: 'wrong box',
       questionIds: [],
     },
   },
@@ -56,7 +56,7 @@ const Container = styled.div`
 const QuizPage = () => {
   const [data, setData] = useState(quizData)
   const onDragStart = start => {
-    console.log(start)
+    // console.log(start)
     const homeIndex = data.zonesOder.indexOf(start.source.droppableId)
     setData({
       ...data,
@@ -64,17 +64,52 @@ const QuizPage = () => {
     })
   }
   const onDragEnd = result => {
+    // console.log(result)
     setData({
       ...data,
       homeIndex: null,
     })
-    console.log('hello world')
+    const { destination, source, draggableId } = result
+    // console.log(destination)
+    if (!destination) {
+      return
+    }
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      // BACK TO SAVE ZONE(LOCATION)//
+      return
+    }
+    const home = data.zones[source.droppableId]
+    const target = data.zones[destination.droppableId]
+
+    if (source.droppableId === destination.droppableId) {
+      const newQuestionIds = [
+        ...data.zones[destination.droppableId].questionIds,
+      ]
+
+      newQuestionIds.splice(source.index, 1)
+      newQuestionIds.splice(destination.index, 0, draggableId)
+      console.log(newQuestionIds)
+      const newZones = {
+        ...data.zones[source.droppableId],
+        questionIds: newQuestionIds,
+      }
+      const newData = {
+        ...data,
+        zones: {
+          ...data.zones,
+          [newZones.id]: newZones,
+        },
+      }
+      console.log(newData)
+      setData(newData)
+      return
+    }
   }
   return (
-    <DragDropContext
-      //  onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
-    >
+    <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
       <Container>
         {data.zonesOder.map((zoneId, index) => {
           const zone = data.zones[zoneId]

@@ -52,6 +52,8 @@ const Nice = () => {
     const foreign = state.columns[destination.droppableId]
 
     if (home === foreign) {
+      console.log(home)
+      console.log('sorting ....')
       const newTaskIds = Array.from(home.taskIds)
       newTaskIds.splice(source.index, 1)
       newTaskIds.splice(destination.index, 0, draggableId)
