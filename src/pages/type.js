@@ -18,6 +18,7 @@ const Type = () => {
   const [questions, setQuestions] = useState([])
   const getRandomNum = num => (Math.random() * num) | 0
   const numRef = useRef()
+  const [userAnswer, setUserAnswer] = useState('')
 
   const [mode, setMode] = useState('')
 
@@ -32,6 +33,11 @@ const Type = () => {
     numRef.current = getRandomNum(questions.length)
     setMode(categories[numRef.current])
   }
+  const handleSubmit = correctAnswer => {
+    console.log(userAnswer)
+    console.log(correctAnswer)
+    if (correctAnswer === userAnswer) alert('goodjob Amazing...')
+  }
   //   console.log(questions)
   useEffect(() => {
     const fetchData = async () => {
@@ -42,7 +48,7 @@ const Type = () => {
         const data = await respond.json()
         const categories = data.map(item => item.category)
         numRef.current = getRandomNum(questions.length)
-        console.log(categories)
+        console.log(data)
         setQuestions(data)
 
         setMode(categories[numRef.current])
@@ -54,73 +60,98 @@ const Type = () => {
   }, [])
 
   if (!questions.length) return <div>game over ...</div>
-  switch (mode) {
-    case 'SQL':
-      return (
-        <div>
-          <h1>SQL</h1>
-          <button onClick={handleNextQuestion}>Next </button>
-        </div>
-      )
-    case 'Docker':
-      return (
-        <div>
-          <h1>Docker</h1>
-          <button onClick={handleNextQuestion}>Next </button>
-        </div>
-      )
-    case 'Code':
-      return (
-        <div>
-          <h1>Code</h1>
-          <button onClick={handleNextQuestion}>Next </button>
-        </div>
-      )
-    case 'DevOps':
-      return (
-        <div>
-          <h1>"DevOps"</h1>
-          <button onClick={handleNextQuestion}>Next </button>
-        </div>
-      )
-    case 'Docker':
-      return (
-        <div>
-          <h1>Docker</h1>
-          <button onClick={handleNextQuestion}>Next </button>
-        </div>
-      )
-    case 'Linux':
-      return (
-        <div>
-          <h1>Linux</h1>
-          <button onClick={handleNextQuestion}>Next </button>
-        </div>
-      )
-    case 'CMS':
-      return (
-        <div>
-          <h1>CMS</h1>
-          <button onClick={handleNextQuestion}>Next </button>
-        </div>
-      )
-    case '':
-      return (
-        <div>
-          <h1>Uncategory</h1>
-          <button onClick={handleNextQuestion}>Next </button>
-        </div>
-      )
+  const quiz = questions[numRef.current]
+  const answers = Object.entries(quiz.answers).filter(([key, value]) => value)
 
-    default:
-      return (
-        <div>
-          <h1>loading ...</h1>
-        </div>
-      )
-  }
+  console.log(answers)
+  return (
+    <div>
+      <h3>Question : {questions[numRef.current].question} </h3>
+      <div className="answer-options">
+        <ul>
+          {answers.map((answer, index) => {
+            return (
+              <li
+                key={index}
+                onClick={() => {
+                  setUserAnswer(answer[0])
+                }}
+              >
+                <p>{answer[1]}</p>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+      <button onClick={() => handleSubmit(quiz.correct_answer)}>Submit</button>
+      <button onClick={handleNextQuestion}>Next Question</button>
+    </div>
+  )
+  // switch (mode) {
+  //   case 'SQL':
+  //     return (
+  //       <div>
+  //         <h1>SQL</h1>
+  //         <button onClick={handleNextQuestion}>Next </button>
+  //       </div>
+  //     )
+  //   case 'Docker':
+  //     return (
+  //       <div>
+  //         <h1>Docker</h1>
+  //         <button onClick={handleNextQuestion}>Next </button>
+  //       </div>
+  //     )
+  //   case 'Code':
+  //     return (
+  //       <div>
+  //         <h1>Code</h1>
+  //         <button onClick={handleNextQuestion}>Next </button>
+  //       </div>
+  //     )
+  //   case 'DevOps':
+  //     return (
+  //       <div>
+  //         <h1>"DevOps"</h1>
+  //         <button onClick={handleNextQuestion}>Next </button>
+  //       </div>
+  //     )
+  //   case 'Docker':
+  //     return (
+  //       <div>
+  //         <h1>Docker</h1>
+  //         <button onClick={handleNextQuestion}>Next </button>
+  //       </div>
+  //     )
+  //   case 'Linux':
+  //     return (
+  //       <div>
+  //         <h1>Linux</h1>
+  //         <button onClick={handleNextQuestion}>Next </button>
+  //       </div>
+  //     )
+  //   case 'CMS':
+  //     return (
+  //       <div>
+  //         <h1>CMS</h1>
+  //         <button onClick={handleNextQuestion}>Next </button>
+  //       </div>
+  //     )
+  //   case '':
+  //     return (
+  //       <div>
+  //         <h1>Uncategory</h1>
+  //         <button onClick={handleNextQuestion}>Next </button>
+  //       </div>
+  //     )
 
-  return <div></div>
+  //   default:
+  //     return (
+  //       <div>
+  //         <h1>loading ...</h1>
+  //       </div>
+  //     )
+  // }
 }
 
 export default Type
