@@ -7,7 +7,9 @@
   "dependencies": {
     "@atlaskit/css-reset": "^6.0.5",
     "@dnd-kit/core": "^1.0.2",
+    "firebase": "^8.2.10",
     "gatsby": "^3.0.1",
+    "gatsby-plugin-firebase": "^0.2.0-beta.4",
     "gatsby-plugin-gatsby-cloud": "^2.0.0",
     "gatsby-plugin-image": "^1.0.0",
     "gatsby-plugin-manifest": "^3.0.0",

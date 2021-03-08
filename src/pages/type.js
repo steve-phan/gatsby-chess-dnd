@@ -21,7 +21,7 @@ const Type = () => {
   const [userAnswer, setUserAnswer] = useState('')
 
   const [mode, setMode] = useState('')
-
+  const [x, setX] = useState('')
   const handleNextQuestion = () => {
     //   Remove question was rendered
     const newQuestions = questions.filter(
@@ -39,6 +39,7 @@ const Type = () => {
     if (correctAnswer === userAnswer) alert('goodjob Amazing...')
   }
   //   console.log(questions)
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -46,6 +47,7 @@ const Type = () => {
           'https://quizapi.io/api/v1/questions?apiKey=piO3ChAWONLAwHKusVwbtK1bNMSTnKh1rdKhN7T1'
         )
         const data = await respond.json()
+        setX(JSON.stringify(data, null, 2))
         const categories = data.map(item => item.category)
         numRef.current = getRandomNum(questions.length)
         console.log(data)
@@ -58,6 +60,13 @@ const Type = () => {
     }
     fetchData()
   }, [])
+  return (
+    <div>
+      <pre>{x}</pre>
+
+      {/* {JSON.stringify({ x: 5, y: 6 }, 2, null)} */}
+    </div>
+  )
 
   if (!questions.length) return <div>game over ...</div>
   const quiz = questions[numRef.current]
