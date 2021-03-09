@@ -1,4 +1,6 @@
+import { navigate } from 'gatsby-link'
 import React, { useState } from 'react'
+import { useEffect } from 'react'
 import styled from 'styled-components'
 import firebase from '../../../firebase/utils.firebase'
 
@@ -62,11 +64,12 @@ const initalValues = {
   correct_answer: '',
   klasse: '',
   category: '',
+  isAvaiable: true,
 }
 
 const AddQuestions = () => {
   const [values, setValues] = useState(initalValues)
-
+  // const [isAvaiable, setIsAvaiable] = useState(false)
   const addData = data => {
     console.log(data)
   }
@@ -98,7 +101,7 @@ const AddQuestions = () => {
       id: klasse + Date.now(),
       question,
       answers: [answer1, answer2, answer3, answer4],
-      correct_answer,
+      correct_answer: Number(correct_answer),
       klasse,
       category,
     }
@@ -106,13 +109,27 @@ const AddQuestions = () => {
       await docRef.update({
         [category]: firebase.firestore.FieldValue.arrayUnion(newQuestion),
       })
+      setValues(initalValues)
+      alert('Question added!')
     } catch (error) {
       console.log(error)
     }
 
     console.log('hegheh')
   }
-  // console.log(values)
+
+  useEffect(() => {
+    if (values.klasse !== 'klasse1' && values.klasse) {
+      return setValues({
+        ...values,
+        isAvaiable: false,
+      })
+    }
+    setValues({
+      ...values,
+      isAvaiable: true,
+    })
+  }, [values.klasse])
   return (
     <Container>
       <Form>
@@ -121,6 +138,7 @@ const AddQuestions = () => {
           id="question"
           type="text"
           // placeholder="Question.."
+          value={values.question}
           required
           onChange={handleInputChange}
         />
@@ -129,6 +147,7 @@ const AddQuestions = () => {
           id="answer1"
           type="text"
           // placeholder="Answer  1..."
+          value={values.answer1}
           required
           onChange={handleInputChange}
         />
@@ -137,6 +156,7 @@ const AddQuestions = () => {
           id="answer2"
           type="text"
           // placeholder="Answer 2 ..."
+          value={values.answer2}
           required
           onChange={handleInputChange}
         />
@@ -145,6 +165,7 @@ const AddQuestions = () => {
           id="answer3"
           type="text"
           // placeholder="Answer  3..."
+          value={values.answer3}
           required
           onChange={handleInputChange}
         />
@@ -153,32 +174,49 @@ const AddQuestions = () => {
           id="answer4"
           type="text"
           // placeholder="Answer  4..."
+          value={values.answer4}
           required
           onChange={handleInputChange}
         />
         <Row>
           <Label htmlFor="correct_answer">Correct answer?</Label>
-          <Select id="correct_answer" onChange={handleInputChange} required>
+          <Select
+            value={values.correct_answer}
+            id="correct_answer"
+            onChange={handleInputChange}
+            required
+          >
             <Option value="">Select</Option>
-            <Option value="answer1">Anwser 1</Option>
-            <Option value="answer2">Anwser 2</Option>
-            <Option value="answer3">Anwser 3</Option>
-            <Option value="answer4">Anwser 4</Option>
+            <Option value="0">Anwser 1</Option>
+            <Option value="1">Anwser 2</Option>
+            <Option value="2">Anwser 3</Option>
+            <Option value="3">Anwser 4</Option>
           </Select>
         </Row>
         <Row>
           <Label htmlFor="klasse">Klasse</Label>
-          <Select id="klasse" onChange={handleInputChange} required>
+          <Select
+            value={values.klasse}
+            id="klasse"
+            onChange={handleInputChange}
+            required
+          >
             <Option value="">Select</Option>
             <Option value="klasse1">Klasse 1</Option>
             <Option value="klasse2">Klasse 2</Option>
-            {/* <Option value="klasse3">Klasse 3</Option>
-          <Option value="klasse4">Klasse 4</Option> */}
+            <Option value="klasse3">Klasse 3</Option>
+            {/* <Option value="klasse4">Klasse 4</Option> */}
           </Select>
         </Row>
         <Row>
           <Label htmlFor="category">Category</Label>
-          <Select id="category" onChange={handleInputChange} required>
+          <Select
+            disabled={values.isAvaiable}
+            value={values.category}
+            id="category"
+            onChange={handleInputChange}
+            required
+          >
             <Option value="">Select</Option>
             <Option value="math">Math</Option>
             <Option value="english">English</Option>
