@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import firebase from 'gatsby-plugin-firebase'
+import firebase from '../../../firebase/utils.firebase'
 
 const Container = styled.div`
   margin: 0 auto;
@@ -92,16 +92,19 @@ const AddQuestions = () => {
       klasse,
       category,
     } = values
-    console.log(firebase)
+
     const docRef = firebase.firestore().doc(`quiz/${klasse}`)
+    const newQuestion = {
+      id: klasse + Date.now(),
+      question,
+      answers: [answer1, answer2, answer3, answer4],
+      correct_answer,
+      klasse,
+      category,
+    }
     try {
-      await docRef.set({
-        id: klasse + new Date(),
-        question,
-        answers: [answer1, answer2, answer3, answer4],
-        correct_answer,
-        klasse,
-        category,
+      await docRef.update({
+        [category]: firebase.firestore.FieldValue.arrayUnion(newQuestion),
       })
     } catch (error) {
       console.log(error)
