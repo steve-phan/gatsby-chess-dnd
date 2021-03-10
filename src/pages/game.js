@@ -54,7 +54,7 @@ const Game = () => {
     //   setIsShowQuestion(true)
     // } else {
 
-    const rdNumber = Math.floor(Math.random() * questions.math.length)
+    const rdNumber = Math.floor(Math.random() * questions?.math.length)
     questionRef.current = rdNumber
     // console.log(questions.math[questionRef.current])
 
@@ -68,7 +68,7 @@ const Game = () => {
     // }
   }
 
-  console.log(curQuestion)
+  // console.log(curQuestion)
   return (
     <div>
       <h1>Hello</h1>
@@ -82,6 +82,8 @@ const Game = () => {
                 <Answer
                   correct_answer={index}
                   onClick={e => {
+                    console.log('hello')
+                    console.log(e.target.className)
                     if (curQuestion.correct_answer === index) {
                       e.target.style.background = 'red'
                     }
